@@ -1,0 +1,8 @@
+/.pytest_cache
+/pytest_venv*
+__pycache__
+*.txt
+.vscode
+*.pyc
+*.ipynb
+*.pptx
