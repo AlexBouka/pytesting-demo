@@ -1,17 +1,25 @@
 import pytest
 
-from src.db import Base
+from src.db import Base, sync_engine
 from src.cars.schemas import CarSchema
 from src.cars.service import CarService
 from src.cars.models import CarState, Car
 
 
+# @pytest.fixture(scope="session", autouse=True)  # marks this fixture to run once
+# def prepare_database():
+#     print("Before DB creation")
+#     Base.metadata.drop_all(sync_engine)
+#     Base.metadata.create_all(sync_engine)
+#     print("After DB creation")
+
+
 @pytest.fixture(scope="session", autouse=True)  # marks this fixture to run once
 def prepare_database():
-    print("Before DB creation")
-    Base.metadata.drop_all()
-    Base.metadata.create_all()
-    print("After DB creation")
+    Base.metadata.drop_all(sync_engine)    # Clear the DB
+    Base.metadata.create_all(sync_engine)  # Create all tables
+    yield                                  # Give control to pytest
+    Base.metadata.drop_all(sync_engine)    # Drop the DB
 
 
 @pytest.fixture
